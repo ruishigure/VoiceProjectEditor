@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QTreeWidgetItem,
 )
 
+from gui.timelineview import TimelineView
 
 class ProjectView(QWidget):
 
@@ -17,9 +18,8 @@ class ProjectView(QWidget):
 
         self.track_list = QListWidget()
 
-        self.timeline = QTextEdit()
-        self.timeline.setReadOnly(True)
-        self.timeline.setPlainText("タイムライン（今後実装）")
+        self.timeline = TimelineView()
+
 
         self.property_tree = QTreeWidget()
         self.property_tree.setHeaderLabels(["項目", "値"])
