@@ -3,9 +3,13 @@ from PySide6.QtWidgets import (
     QGraphicsView
 )
 
+from PySide6.QtCore import Signal
+
 from gui.talkitem import TalkItem
 
 class TimelineView(QGraphicsView):
+
+    talk_selected = Signal(object)
 
     def __init__(self):
         super().__init__()
@@ -15,6 +19,10 @@ class TimelineView(QGraphicsView):
         self.setScene(self.scene)
 
         self.draw_background()
+
+        self.scene.selectionChanged.connect(
+       self.on_selection_changed
+       )
 
     def draw_background(self):
 
@@ -39,7 +47,7 @@ class TimelineView(QGraphicsView):
             for talk in track.talks:
 
                 item = TalkItem(
-                    talk.text,
+                    talk,
                     x,
                     y,
                     220
@@ -49,27 +57,14 @@ class TimelineView(QGraphicsView):
 
                 x += 240   
 
+    def on_selection_changed(self):
 
-"""
-    def set_project(self, project):
+        items = self.scene.selectedItems()
 
-        self.draw_background()
+        if not items:
+            return
 
-        y = 40
+        item = items[0]
 
-        for track in project.tracks:
+        self.talk_selected.emit(item.talk)
 
-            for talk in track.talks:
-
-                item = TalkItem(
-                    talk.text,
-                    100,
-                    y,
-                    220
-                )
-
-                self.scene.addItem(item)
-
-                y += 50
-
-"""

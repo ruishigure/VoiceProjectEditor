@@ -2,6 +2,7 @@ from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QTreeWidget,
+    QTreeWidgetItem,
 )
 
 
@@ -19,3 +20,25 @@ class PropertyView(QWidget):
 
     def clear(self):
         self.tree.clear()
+
+    def show_talk(self, talk):
+
+        self.tree.clear()
+
+        self.tree.addTopLevelItem(
+            QTreeWidgetItem(
+                ["テキスト", talk.text]
+            )
+        )
+
+        self.tree.addTopLevelItem(
+            QTreeWidgetItem(
+                ["開始", str(talk.start)]
+            )
+        )
+
+        self.tree.addTopLevelItem(
+            QTreeWidgetItem(
+                ["長さ", str(talk.length)]
+            )
+        )

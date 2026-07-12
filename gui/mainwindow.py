@@ -25,6 +25,9 @@ class MainWindow(QMainWindow):
 
         self.project_view = ProjectView()
         self.setCentralWidget(self.project_view)
+        self.project_view.timeline.talk_selected.connect(
+            self.on_talk_selected
+        )
 
         self.statusBar().showMessage("Ready")
 
@@ -71,3 +74,11 @@ class MainWindow(QMainWindow):
                 "エラー",
                 str(e)
             )
+
+    def on_talk_selected(self, talk):
+
+        self.project_view.property_view.show_talk(talk)
+
+        self.statusBar().showMessage(
+            f"選択: {talk.text}"
+        )

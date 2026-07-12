@@ -1,15 +1,26 @@
-from PySide6.QtWidgets import QGraphicsRectItem
-from PySide6.QtWidgets import QGraphicsSimpleTextItem
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QBrush
+from PySide6.QtWidgets import (
+    QGraphicsRectItem,
+    QGraphicsSimpleTextItem
+)
 
 
 class TalkItem(QGraphicsRectItem):
 
-    def __init__(self, text, x, y, width):
+    def __init__(self, talk, x, y, width):
 
-        super().__init__(0, 0, width, 30)
+        super().__init__(x, y, width, 30)
 
-        self.setPos(x, y)
+        self.talk = talk
 
-        label = QGraphicsSimpleTextItem(text, self)
+        self.setBrush(QBrush(Qt.lightGray))
 
-        label.setPos(5, 5)
+        self.text_item = QGraphicsSimpleTextItem(
+            talk.text,
+            self
+        )
+
+        self.text_item.setPos(x + 5, y + 5)
+
+        self.setFlag(QGraphicsRectItem.ItemIsSelectable)
