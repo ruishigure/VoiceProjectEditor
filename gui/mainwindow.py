@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 
+from core.project_loader import ProjectLoader
 
 class MainWindow(QMainWindow):
 
@@ -55,7 +56,7 @@ class MainWindow(QMainWindow):
 
         filename, _ = QFileDialog.getOpenFileName(
             self,
-            "プロジェクトを開く",
+            "開く",
             "",
             "Voice Project (*.vpp *.ccst)"
         )
@@ -63,10 +64,11 @@ class MainWindow(QMainWindow):
         if not filename:
             return
 
-        self.current_file = Path(filename)
+        project = ProjectLoader.load(filename)
 
         QMessageBox.information(
             self,
             "読み込み",
-            str(self.current_file)
+            str(project)
         )
+    
