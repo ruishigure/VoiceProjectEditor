@@ -1,6 +1,8 @@
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
+from core.project import Project
+
 
 class VoiSonaParser:
 
@@ -10,7 +12,11 @@ class VoiSonaParser:
 
         root = tree.getroot()
 
-        return {
-            "type": "VoiSona",
-            "root": root.tag
-        }
+        project = Project(
+            project_type="VoiSona",
+            filename=filename.name
+        )
+
+        project.tracks.append(root.tag)
+
+        return project

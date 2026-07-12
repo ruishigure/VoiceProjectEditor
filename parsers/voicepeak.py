@@ -1,6 +1,8 @@
 from pathlib import Path
 import zipfile
 
+from core.project import Project
+
 
 class VoicePeakParser:
 
@@ -10,10 +12,13 @@ class VoicePeakParser:
             raise ValueError("VOICEPEAKプロジェクトではありません")
 
         with zipfile.ZipFile(filename) as z:
-
             files = z.namelist()
 
-        return {
-            "type": "VOICEPEAK",
-            "files": files
-        }
+        project = Project(
+            project_type="VOICEPEAK",
+            filename=filename.name
+        )
+
+        project.tracks = files
+
+        return project

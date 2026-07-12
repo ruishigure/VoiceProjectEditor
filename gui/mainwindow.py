@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
 
 from core.project_loader import ProjectLoader
 
+from gui.projectview import ProjectView
+
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -21,19 +23,9 @@ class MainWindow(QMainWindow):
 
         self.create_menu()
 
-        label = QLabel(
-            "VoiceProjectEditor\n\n"
-            "VOICEPEAK (.vpp)\n"
-            "VoiSona (.ccst)\n\n"
-            "Commit 1"
-        )
+        self.project_view = ProjectView()
+        self.setCentralWidget(self.project_view)
 
-        label.setStyleSheet("font-size:18px;")
-        label.setAlignment(
-            label.alignment()
-        )
-
-        self.setCentralWidget(label)
 
     def create_menu(self):
 
@@ -66,9 +58,17 @@ class MainWindow(QMainWindow):
 
         project = ProjectLoader.load(filename)
 
-        QMessageBox.information(
-            self,
-            "読み込み",
-            str(project)
-        )
+        self.project_view.set_project(project)
+
+        # text = (
+        #     f"ファイル : {project.filename}\n"
+        #    f"種類 : {project.project_type}\n"
+        #    f"項目数 : {len(project.tracks)}"
+        #    )
+
+        # QMessageBox.information(
+        #    self,
+        #    "Project",
+        #    text
+        # )
     
