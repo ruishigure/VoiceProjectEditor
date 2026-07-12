@@ -26,6 +26,8 @@ class MainWindow(QMainWindow):
         self.project_view = ProjectView()
         self.setCentralWidget(self.project_view)
 
+        self.statusBar().showMessage("Ready")
+
 
     def create_menu(self):
 
@@ -56,19 +58,16 @@ class MainWindow(QMainWindow):
         if not filename:
             return
 
-        project = ProjectLoader.load(filename)
+        try:
+            project = ProjectLoader.load(filename)
 
-        self.project_view.set_project(project)
+            self.project_view.set_project(project)
 
-        # text = (
-        #     f"ファイル : {project.filename}\n"
-        #    f"種類 : {project.project_type}\n"
-        #    f"項目数 : {len(project.tracks)}"
-        #    )
+            self.statusBar().showMessage(filename)
 
-        # QMessageBox.information(
-        #    self,
-        #    "Project",
-        #    text
-        # )
-    
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "エラー",
+                str(e)
+            )

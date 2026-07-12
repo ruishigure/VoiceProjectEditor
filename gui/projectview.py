@@ -1,7 +1,11 @@
-from PySide6.QtWidgets import QWidget
-from PySide6.QtWidgets import QVBoxLayout
-from PySide6.QtWidgets import QLabel
-from PySide6.QtWidgets import QListWidget
+from PySide6.QtWidgets import (
+    QWidget,
+    QHBoxLayout,
+    QListWidget,
+    QTextEdit,
+    QTreeWidget,
+    QTreeWidgetItem,
+)
 
 
 class ProjectView(QWidget):
@@ -9,23 +13,31 @@ class ProjectView(QWidget):
     def __init__(self):
         super().__init__()
 
-        layout = QVBoxLayout(self)
+        layout = QHBoxLayout(self)
 
-        self.title = QLabel("プロジェクト未読込")
-        self.list = QListWidget()
+        self.track_list = QListWidget()
 
-        layout.addWidget(self.title)
-        layout.addWidget(self.list)
+        self.timeline = QTextEdit()
+        self.timeline.setReadOnly(True)
+        self.timeline.setPlainText("タイムライン（今後実装）")
 
+        self.property_tree = QTreeWidget()
+        self.property_tree.setHeaderLabels(["項目", "値"])
 
+        layout.addWidget(self.track_list, 1)
+        layout.addWidget(self.timeline, 4)
+        layout.addWidget(self.property_tree, 2)
 
     def set_project(self, project):
 
-        self.title.setText(
-            f"{project.filename} ({project.project_type})"
-        )
-
-        self.list.clear()
+        self.track_list.clear()
+        self.property_tree.clear()
 
         for item in project.tracks:
-            self.list.addItem(str(item))
+            self.track_list.addItem(str(item))
+
+        root = QTreeWidgetItem(["ファイル", project.filename])
+        self.property_tree.addTopLevelItem(root)
+
+        root2 = QTreeWidgetItem(["種類", project.project_type])
+        self.property_tree.addTopLevelItem(root2)
