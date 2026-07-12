@@ -2,12 +2,11 @@ from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QListWidget,
-    QTextEdit,
-    QTreeWidget,
-    QTreeWidgetItem,
 )
 
 from gui.timelineview import TimelineView
+
+from gui.propertyview import PropertyView
 
 class ProjectView(QWidget):
 
@@ -20,24 +19,40 @@ class ProjectView(QWidget):
 
         self.timeline = TimelineView()
 
+        self.property_view = PropertyView()
 
-        self.property_tree = QTreeWidget()
-        self.property_tree.setHeaderLabels(["項目", "値"])
-
+        # 左
         layout.addWidget(self.track_list, 1)
+
+        # 中央
         layout.addWidget(self.timeline, 4)
-        layout.addWidget(self.property_tree, 2)
+
+        # 右
+        layout.addWidget(self.property_view, 2)
 
     def set_project(self, project):
 
         self.track_list.clear()
-        self.property_tree.clear()
 
-        for item in project.tracks:
-            self.track_list.addItem(str(item))
+        for track in project.tracks:
+            self.track_list.addItem(str(track))
+        
+        self.property_view.clear()
 
-        root = QTreeWidgetItem(["ファイル", project.filename])
-        self.property_tree.addTopLevelItem(root)
+        tree = self.property_view.tree
 
-        root2 = QTreeWidgetItem(["種類", project.project_type])
-        self.property_tree.addTopLevelItem(root2)
+        from PySide6.QtWidgets import QTreeWidgetItem
+
+        tree.addTopLevelItem(
+            QTreeWidgetItem(["ファイル", project.filename])
+            )
+        
+        tree.addTopLevelItem(
+            QTreeWidgetItem(["種類", project.project_type])
+            )
+        
+        tree.addTopLevelItem(
+            QTreeWidgetItem(["項目数", str(len(project.tracks))])
+            )
+        
+        self.timeline.set_project(project)

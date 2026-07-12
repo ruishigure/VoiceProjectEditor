@@ -26,11 +26,21 @@ class TimelineView(QGraphicsView):
         for y in range(0, 800, 40):
             self.scene.addLine(0, y, 5000, y)
 
-        item = TalkItem(
-            "こんにちは",
-            100,
-            40,
-            200
-        )
+    def set_project(self, project):
 
-        self.scene.addItem(item)
+        self.draw_background()
+
+        y = 40
+
+        for talk in project.talks:
+
+            item = TalkItem(
+                talk.text,
+                100,
+                y,
+                220
+            )
+
+            self.scene.addItem(item)
+
+            y += 50
