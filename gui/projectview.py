@@ -35,7 +35,7 @@ class ProjectView(QWidget):
         self.track_list.clear()
 
         for track in project.tracks:
-            self.track_list.addItem(str(track))
+            self.track_list.addItem(track.name)
         
         self.property_view.clear()
 

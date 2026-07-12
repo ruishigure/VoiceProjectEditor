@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 
-from core.project import Project, Talk
+from core.project import Project, Track, Talk
 
 
 class VoicePeakParser:
@@ -9,8 +9,8 @@ class VoicePeakParser:
     def load(self, filename: Path):
 
         text = filename.read_bytes().rstrip(b"\x00").decode("utf-8")
-
         data = json.loads(text)
+       
 
         project = Project(
             project_type="VOICEPEAK",
@@ -18,17 +18,23 @@ class VoicePeakParser:
         )
 
         blocks = data["project"].get("blocks", [])
+
         for i, block in enumerate(blocks):
-            project.tracks.append(f"Block {i+1}")
 
-        for sentence in block.get("sentences", []):
-            text = sentence.get("text", "")
-
-            project.talks.append(
-                Talk(text=text)
+            track = Track(
+                name=f"Block {i+1}"
             )
 
-        for i, block in enumerate(blocks):
-            project.tracks.append(f"Block {i + 1}")
+            for sentence in block.get("sentence-list", []):
+
+                
+
+                talk = Talk(
+                    text=sentence.get("text", "")
+                )
+
+                track.talks.append(talk)
+
+            project.tracks.append(track)
 
         return project

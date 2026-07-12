@@ -32,15 +32,49 @@ class TimelineView(QGraphicsView):
 
         y = 40
 
-        for talk in project.talks:
+        print("Track数:", len(project.tracks))
 
-            item = TalkItem(
-                talk.text,
-                100,
-                y,
-                220
-            )
+        for track in project.tracks:
 
-            self.scene.addItem(item)
+            print("Track:", track.name)
+            print("Talk数:", len(track.talks))
 
-            y += 50
+            for talk in track.talks:
+
+                print("  ", talk.text)
+
+                item = TalkItem(
+                    talk.text,
+                    100,
+                    y,
+                    220
+                )
+
+                self.scene.addItem(item)
+                
+                y += 50       
+
+
+"""
+    def set_project(self, project):
+
+        self.draw_background()
+
+        y = 40
+
+        for track in project.tracks:
+
+            for talk in track.talks:
+
+                item = TalkItem(
+                    talk.text,
+                    100,
+                    y,
+                    220
+                )
+
+                self.scene.addItem(item)
+
+                y += 50
+
+"""
